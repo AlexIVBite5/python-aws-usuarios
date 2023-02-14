@@ -1,34 +1,20 @@
-name: Deploy main branch
-
-on:
-  push:
-    branches:
-      - main
-
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
-  deploy:
-    name: deploy
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
-    environment:
-      name: Production
-    strategy:
-      matrix:
-        python-version:
-          - 3.8
     steps:
-    - run: echo "🎉 The job was automatically triggered by a ${{ secrets.AWS_ACCESS_KEY_ID }} event."
-    - run: echo "🎉 The job was automatically triggered by a ${{ secrets.AWS_SECRET_ACCESS_KEY }} event."
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        node-version: ${{ matrix.python-version }}
-    - run: npm ci
-    - name: Install Plugin and Deploy
-      uses: serverless/github-action@v2
-      with:
-        args: -c "serverless plugin install --name serverless-python-requirements && serverless deploy"
-        entrypoint: /bin/sh
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: echo "🎉 The job was automatically triggered by a ${{ secrets.AWS_ACCESS_KEY_ID }} event."
+      - run: echo "🎉 The job was automatically triggered by a ${{ secrets.AWS_SECRET_ACCESS_KEY }} event."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
