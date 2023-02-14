@@ -1,6 +1,6 @@
 service: python-aws-usuarios
 
-frameworkVersion: '3'
+frameworkVersion: '2'
 
 provider:
   name: aws
