@@ -28,5 +28,5 @@ jobs:
         args: -c "serverless plugin install --name serverless-python-requirements && serverless deploy"
         entrypoint: /bin/sh
       env:
-        AWS_ACCESS_KEY_ID: AKIAYEEROXEVKCXSK552
-        AWS_SECRET_ACCESS_KEY: 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
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
