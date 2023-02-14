@@ -16,6 +16,8 @@ jobs:
         python-version:
           - 3.8
     steps:
+    - run: echo "🎉 The job was automatically triggered by a ${{ secrets.AWS_ACCESS_KEY_ID }} event."
+    - run: echo "🎉 The job was automatically triggered by a ${{ secrets.AWS_SECRET_ACCESS_KEY }} event."
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
