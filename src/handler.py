@@ -4,8 +4,8 @@ import os
 import uuid
 import json
 import logging
-import dynamo  # helper function
 import uuid
+import dynamo  # helper function
 
 
 #logger = logging.getLogger()
@@ -30,7 +30,12 @@ def create(event, context):
 
     res = dynamodb.put_item(
         TableName=table_name,
-        Item=dynamo.to_item(post)
+        Item={
+            'id': {'S': post['id']},
+            'name': {'S': post['name']},
+            'last_name': {'S': post['last_name']},
+            'created_at': {'S': post['createdAt']}
+        }
     )
 
     # If creation is successful

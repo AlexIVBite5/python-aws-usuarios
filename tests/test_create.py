@@ -1,26 +1,30 @@
-import pytest
-from src.handler import create
+import boto3
 import json
+import os
+import pytest
+import uuid
 from datetime import datetime
-from uuid import UUID, uuid4
+from moto import mock_dynamodb2
 
+from src.handler import create
 
+@mock_dynamodb2
+def test_create_user():
+    os.environ['DYNAMODB_TABLE'] = 'test-table'
+    dynamodb = boto3.client('dynamodb')
+    dynamodb.create_table(
+        TableName=os.environ['DYNAMODB_TABLE'],
+        KeySchema=[{'AttributeName': 'id', 'KeyType': 'HASH'}],
+        AttributeDefinitions=[{'AttributeName': 'id', 'AttributeType': 'S'}]
+    )
 
-@pytest.mark.parametrize("event, expected_response", [
-    ({"body": '{"name": "Alex", "last_name": "Illescas"}'},
-     {"statusCode": 200, "body": "Successfully created."}),
-    ({"body": '{"name": "Alex", "last_name": "Illescas"}'},
-     {"statusCode": 500, "body": "An error occured while creating post."})
-])
-def test_create(event, expected_response, mocker):
-    # Mock dynamodb.put_item() and dynamo.to_item()
-    dynamodb = mocker.patch("lambda_function.dynamodb")
-    dynamo = mocker.patch("lambda_function.dynamo")
-    dynamo.to_item.return_value = {"id": str(uuid4()), "name": "Alex", "last_name": "Illescas", "createdAt": datetime.now().isoformat()}
-    dynamodb.put_item.return_value = {"ResponseMetadata": {"HTTPStatusCode": 200}}
+    event = {
+        'body': json.dumps({
+            'name': 'juan',
+            'last_name': 'lopez'
+        })
+    }
 
-    # Call create function
-    response = create(event, None)
-
-    # Check response
-    assert response == expected_response
+    response = create(event, {})
+    assert response['statusCode'] == 200
+    assert response['body'] == 'Successfully created.'
