@@ -6,12 +6,11 @@ import json
 import logging
 import uuid
 import dynamo 
-from  handler import create
-def test_all():
-    #response = all()
-    #print(response)
-    #response.statusCode == 200
+import handler
+def test_all(event, expected_response, mocker):
+    # Mock dynamodb.put_item() and dynamo.to_item()
+    dynamodb = mocker.patch("handler.dynamodb")
+    dynamodb.put_item.return_value = {"ResponseMetadata": {"HTTPStatusCode": 200}}
+
+    # Call create function
     assert True
-    #assert response.content is not None
-    #lista = response.json()["body"]
-    #assert isinstance(lista, list)
