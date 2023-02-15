@@ -11,12 +11,13 @@ import dynamo  # helper function
 #logger = logging.getLogger()
 #logger.setLevel(logging.INFO)
 
-table_name = str(os.environ['DYNAMODB_TABLE'])
-destination_table_name = str(os.environ['DESTINATION_TABLE'])
+
 
 def create(event, context):
     #logger.info(f'Incoming request is: {event}')
     dynamodb = boto3.client('dynamodb')
+    table_name = str(os.environ['DYNAMODB_TABLE'])
+    destination_table_name = str(os.environ['DESTINATION_TABLE'])
     # Set the default error response
     response = {
         "statusCode": 500,
@@ -52,6 +53,8 @@ def get(event, context):
     #logger.info(f'Incoming request is: {event}')
     # Set the default error response
     dynamodb = boto3.client('dynamodb')
+    table_name = str(os.environ['DYNAMODB_TABLE'])
+    destination_table_name = str(os.environ['DESTINATION_TABLE'])
     response = {
         "statusCode": 500,
         "body": "An error occured while getting post."
@@ -78,6 +81,8 @@ def get(event, context):
 def all(event, context):
     # Set the default error response
     dynamodb = boto3.client('dynamodb')
+    table_name = str(os.environ['DYNAMODB_TABLE'])
+    destination_table_name = str(os.environ['DESTINATION_TABLE'])
     scan_result = dynamodb.scan(TableName=table_name)['Items']
     posts = []
     #print(scan_result)
@@ -92,6 +97,8 @@ def all(event, context):
 def replication(event, context):
     # Set the default error response
     dynamodb = boto3.client('dynamodb')
+    table_name = str(os.environ['DYNAMODB_TABLE'])
+    destination_table_name = str(os.environ['DESTINATION_TABLE'])
     print(destination_table_name)
     response = {
         "statusCode": 500,
