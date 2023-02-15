@@ -54,7 +54,7 @@ def get(event, context):
     # Set the default error response
     dynamodb = boto3.client('dynamodb')
     table_name = str(os.environ['DYNAMODB_TABLE'])
-    destination_table_name = str(os.environ['DESTINATION_TABLE'])
+    #destination_table_name = str(os.environ['DESTINATION_TABLE'])
     response = {
         "statusCode": 500,
         "body": "An error occured while getting post."
@@ -82,7 +82,7 @@ def all(event, context):
     # Set the default error response
     dynamodb = boto3.client('dynamodb')
     table_name = str(os.environ['DYNAMODB_TABLE'])
-    destination_table_name = str(os.environ['DESTINATION_TABLE'])
+    #destination_table_name = str(os.environ['DESTINATION_TABLE'])
     scan_result = dynamodb.scan(TableName=table_name)['Items']
     posts = []
     #print(scan_result)
