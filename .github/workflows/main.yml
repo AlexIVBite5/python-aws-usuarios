@@ -24,7 +24,7 @@ jobs:
     - run: npm ci
     # Deployment of your project
     - name: serverless deploy
-      uses: suprgames/serverless-github-action@v1.77
+      uses: suprgames/serverless-github-action@v2
       with:
         command: deploy
         args: -v
