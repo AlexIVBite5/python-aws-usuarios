@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from uuid import UUID, uuid4
 import pytest
-from ..src.handler import create
+from handler import create
 
 @pytest.mark.parametrize("event, expected_response", [
     ({"body": '{"name": "Alex", "last_name": "Illescas"}'},
