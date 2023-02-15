@@ -1,4 +1,3 @@
-from src.handler import all
 import pytest
 
 def test_all():
