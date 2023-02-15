@@ -23,10 +23,11 @@ jobs:
         node-version: ${{ matrix.python-version }}
     - run: npm ci
     # Deployment of your project
-    - name: serverless deploy
+    - name: Install Plugin and Deploy
       uses: serverless/github-action@v3.1
       with:
-        args: deploy --verbose
+        args: -c "serverless plugin install --name serverless-python-requirements && serverless deploy --verbose"
+        entrypoint: /bin/sh
       env:
         #SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
         # or if using AWS credentials directly
