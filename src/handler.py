@@ -10,7 +10,7 @@ import dynamo  # helper function
 
 #logger = logging.getLogger()
 #logger.setLevel(logging.INFO)
-dynamodb = boto3.client('dynamodb')
+dynamodb = boto3.resource('dynamodb', region_name=str(os.environ['REGION_NAME']))
 table_name = str(os.environ['DYNAMODB_TABLE'])
 destination_table_name = str(os.environ['DESTINATION_TABLE'])
 
