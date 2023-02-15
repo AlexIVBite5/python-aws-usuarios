@@ -7,16 +7,25 @@ import logging
 import uuid
 import dynamo 
 import handler
-@pytest.mark.parametrize("event, expected_response", [
-    ({"body": '{"name": "Alex", "last_name": "Illescas"}'},
-     {"statusCode": 200, "body": "Successfully created."}),
-    ({"body": '{"name": "Alexander", "last_name": "Illescas"}'},
-     {"statusCode": 500, "body": "An error occured while creating post."})
-])
-def test_all(event, expected_response, mocker):
-    # Mock dynamodb.put_item() and dynamo.to_item()
-    dynamodb = mocker.patch("handler.dynamodb")
-    dynamodb.put_item.return_value = {"ResponseMetadata": {"HTTPStatusCode": 200}}
+from moto import mock_dynamodb2
 
-    # Call create function
-    assert True
+@mock_dynamodb2
+def test_all():
+    os.environ['DYNAMODB_TABLE'] = 'test-table'
+    dynamodb = boto3.client('dynamodb')
+    dynamodb.create_table(
+        TableName=os.environ['DYNAMODB_TABLE'],
+        KeySchema=[{'AttributeName': 'id', 'KeyType': 'HASH'}],
+        AttributeDefinitions=[{'AttributeName': 'id', 'AttributeType': 'S'}]
+    )
+
+    event = {
+        'body': json.dumps({
+            'name': 'John',
+            'last_name': 'Doe'
+        })
+    }
+
+    response = handler.create(event, {})
+    assert response['statusCode'] == 200
+    assert response['body'] == 'Successfully created.'
