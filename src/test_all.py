@@ -7,9 +7,9 @@ import logging
 import uuid
 import dynamo 
 import handler
-from moto import mock_dynamodb2
+import moto 
 
-@mock_dynamodb2
+@moto.mock_dynamodb2
 def test_all():
     os.environ['DYNAMODB_TABLE'] = 'test-table'
     dynamodb = boto3.client('dynamodb')
