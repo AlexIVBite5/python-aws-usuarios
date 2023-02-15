@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from uuid import UUID, uuid4
 import pytest
-from handler import create
+import handler
 
 @pytest.mark.parametrize("event, expected_response", [
     ({"body": '{"name": "Alex", "last_name": "Illescas"}'},
@@ -12,11 +12,11 @@ from handler import create
 ])
 def test_create(event, expected_response, mocker):
     # Mock dynamodb.put_item() and dynamo.to_item()
-    dynamodb = mocker.patch("..src.handler.dynamodb")
+    dynamodb = mocker.patch("handler.dynamodb")
     dynamodb.put_item.return_value = {"ResponseMetadata": {"HTTPStatusCode": 200}}
 
     # Call create function
-    response = create(event, None)
+    response = handler.create(event, None)
 
     # Check response
     assert response == expected_response
