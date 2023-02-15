@@ -18,6 +18,7 @@ provider:
       statements:
         - Effect: Allow
           Action:
+            - lambda:UpdateFunctionCode
             - dynamodb:Query
             - dynamodb:Scan
             - dynamodb:GetItem
