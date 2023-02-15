@@ -23,15 +23,11 @@ jobs:
         node-version: ${{ matrix.python-version }}
     - run: npm ci
     # Deployment of your project
-    - name: serverless deploy
-      uses: suprgames/serverless-github-action@v2
+    - name: Serverless Deploy
+      uses: sumeetweb/serverless-deploy@master
       with:
-        command: deploy
-        args: -v
+        args: ''  # any deploy arguments you want to pass
       env:
-        # To link with your Serverless Framework account, equivalent to login
-        #SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # The AWS Credentials
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
