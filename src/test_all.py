@@ -27,12 +27,13 @@ def test_all():
             }
         ]
     }
+    #expected_response = {'statusCode': 200, 'body': '[{id"nombre": "Juan", "apellido": "Pérez"}, {"nombre": "María", "apellido": "González"}]'}
     with patch('boto3.client', return_value=mock_dynamodb_client):
         # Ejecuta la función all
         result = handler.all({}, {})
         # Verifica que la respuesta sea la esperada
         assert result['statusCode'] == 200
         assert result['body'] == '[{"id": "1234", "name": "John", "surname": "Doe"}, {"id": "5678", "name": "Jane", "surname": "Smith"}]'
-        assert {"id": "1234", "name": "John", "surname": "Doe"} in result['body']
-        assert {"id": "5678", "name": "Jane", "surname": "Smith"} in result['body']
+        #assert {"id": "1234", "name": "John", "surname": "Doe"} in result['body']
+        #assert {"id": "5678", "name": "Jane", "surname": "Smith"} in result['body']
 
