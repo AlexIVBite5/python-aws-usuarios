@@ -97,7 +97,6 @@ def all(event, context):
 def replication(event, context):
     # Set the default error response
     dynamodb = boto3.client('dynamodb')
-    table_name = str(os.environ['DYNAMODB_TABLE'])
     destination_table_name = str(os.environ['DESTINATION_TABLE'])
     print(destination_table_name)
     response = {
@@ -113,10 +112,16 @@ def replication(event, context):
                 'id': new_item['id']['S'],
                 'name': new_item['name']['S'],
                 'last_name': new_item['last_name']['S'],
+                'created_at': new_item['created_at']['S'],
             }
             res = dynamodb.put_item(
                 TableName=destination_table_name,
-                Item=dynamo.to_item(item)
+                Item={
+                    'id': {'S': item['id']},
+                    'name': {'S': item['name']},
+                    'last_name': {'S': item['last_name']},
+                    'created_at': {'S': item['createdAt']}
+                }
             )
             if res['ResponseMetadata']['HTTPStatusCode'] == 200:
                 response = {

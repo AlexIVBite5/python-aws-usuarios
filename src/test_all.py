@@ -17,23 +17,24 @@ def test_all():
         "Items": [
             {
                 "id": {"S": "1234"},
-                "name": {"S": "John"},
-                "surname": {"S": "Doe"}
-            },
-            {
-                "id": {"S": "5678"},
-                "name": {"S": "Jane"},
-                "surname": {"S": "Smith"}
+                "name": {"S": "Juan"},
+                "last_name": {"S": "Lopez"}
             }
         ]
     }
-    #expected_response = {'statusCode': 200, 'body': '[{id"nombre": "Juan", "apellido": "Pérez"}, {"nombre": "María", "apellido": "González"}]'}
-    with patch('boto3.client', return_value=mock_dynamodb_client):
+    mock_to_dict = MagicMock(return_value={"id": "1234", "name": "Juan", "last_name": "Lopez"})
+    
+
+    with patch('boto3.client', return_value=mock_dynamodb_client), patch('handler.dynamo.to_dict', new=mock_to_dict):
         # Ejecuta la función all
         result = handler.all({}, {})
         # Verifica que la respuesta sea la esperada
         assert result['statusCode'] == 200
-        assert result['body'] == '[{"id": "1234", "name": "John", "surname": "Doe"}, {"id": "5678", "name": "Jane", "surname": "Smith"}]'
-        #assert {"id": "1234", "name": "John", "surname": "Doe"} in result['body']
-        #assert {"id": "5678", "name": "Jane", "surname": "Smith"} in result['body']
+        assert result['body'] == '[{"id": "1234", "name": "Juan", "last_name": "Lopez"}]'
 
+    expected_response = {
+        "statusCode": 200,
+        "body": json.dumps([{"id": "1234", "name": "Juan", "last_name": "Lopez"}])
+    }
+    assert result == expected_response
+       
