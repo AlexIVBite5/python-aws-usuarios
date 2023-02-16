@@ -120,7 +120,7 @@ def replication(event, context):
                     'id': {'S': item['id']},
                     'name': {'S': item['name']},
                     'last_name': {'S': item['last_name']},
-                    'created_at': {'S': item['createdAt']}
+                    'created_at': {'S': item['created_at']}
                 }
             )
             if res['ResponseMetadata']['HTTPStatusCode'] == 200:
