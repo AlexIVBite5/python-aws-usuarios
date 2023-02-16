@@ -37,4 +37,4 @@ def test_replication():
 
     # Check the response
     assert response['statusCode'] == 200
-    assert response['body'] == 'Successfully replication.'
+    assert response['body'] == 'Successful replication.'
