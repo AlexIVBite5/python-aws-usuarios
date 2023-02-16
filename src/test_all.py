@@ -7,33 +7,51 @@ import logging
 import uuid
 import dynamo 
 import handler
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, Mock
 
 
 def test_all():
-    os.environ['DYNAMODB_TABLE'] = 'test-table'
-    event = {
-        'body': json.dumps({
-            'name': 'John',
-            'last_name': 'Doe'
-        })
+    dynamodb_mock = Mock()
+    dynamodb_mock.scan.return_value = {
+        "Items": [
+            {
+                "id": {"S": "1"},
+                "title": {"S": "Test post 1"},
+                "content": {"S": "This is the first test post."},
+                "createdAt": {"S": "2022-01-01T00:00:00.000000"},
+                "updatedAt": {"S": "2022-01-01T00:00:00.000000"}
+            },
+            {
+                "id": {"S": "2"},
+                "title": {"S": "Test post 2"},
+                "content": {"S": "This is the second test post."},
+                "createdAt": {"S": "2022-01-02T00:00:00.000000"},
+                "updatedAt": {"S": "2022-01-02T00:00:00.000000"}
+            }
+        ]
     }
-    context = {}
-    # Mock the DynamoDB client and its put_item method
-    mock_client = MagicMock()
-    mock_client.put_item.return_value = {'ResponseMetadata': {'HTTPStatusCode': 200}}
-    with patch('boto3.client', return_value=mock_client):
-        # Call the function and get the response
-        response = handler.create(event, context)
 
-    # Check the response
-    assert response['statusCode'] == 200
-    assert response['body'] == 'Successfully created.'
-    # Check that the item was actually created in DynamoDB
-    mock_client.put_item.assert_called_once()
-    args, kwargs = mock_client.put_item.call_args
-    assert kwargs['TableName'] == 'test_table'
-    assert kwargs['Item']['name']['S'] == 'John'
-    assert kwargs['Item']['last_name']['S'] == 'Doe'
-    assert 'createdAt' in kwargs['Item']
-    assert 'id' in kwargs['Item']
+    # Call the function with the mock event and context
+    response = handler.all({}, {}, dynamodb=dynamodb_mock)
+
+    # Check that the response is correct
+    expected_response = {
+        "statusCode": 200,
+        "body": json.dumps([
+            {
+                "id": "1",
+                "title": "Test post 1",
+                "content": "This is the first test post.",
+                "createdAt": "2022-01-01T00:00:00.000000",
+                "updatedAt": "2022-01-01T00:00:00.000000"
+            },
+            {
+                "id": "2",
+                "title": "Test post 2",
+                "content": "This is the second test post.",
+                "createdAt": "2022-01-02T00:00:00.000000",
+                "updatedAt": "2022-01-02T00:00:00.000000"
+            }
+        ])
+    }
+    assert response == expected_response
