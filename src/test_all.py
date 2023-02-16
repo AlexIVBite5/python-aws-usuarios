@@ -11,6 +11,7 @@ from unittest.mock import MagicMock, patch, Mock
 
 
 def test_all():
+    os.environ['DYNAMODB_TABLE'] = 'test-table'
     mock_dynamodb_client = MagicMock()
     mock_dynamodb_client.scan.return_value = {
         "Items": [
@@ -28,7 +29,7 @@ def test_all():
     }
     with patch('boto3.client', return_value=mock_dynamodb_client):
         # Ejecuta la función all
-        result = all({}, {})
+        result = handler.all({}, {})
         # Verifica que la respuesta sea la esperada
         assert result['statusCode'] == 200
         assert len(result['body']) == 2

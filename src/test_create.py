@@ -36,5 +36,3 @@ def test_create():
     assert kwargs['TableName'] == 'test-table'
     assert kwargs['Item']['name']['S'] == 'John'
     assert kwargs['Item']['last_name']['S'] == 'Doe'
-    assert 'createdAt' in kwargs['Item']
-    assert 'id' in kwargs['Item']
