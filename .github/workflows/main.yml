@@ -43,7 +43,10 @@ jobs:
     - name: Run tests
       run: pytest
     - name: Run tests coverage
-      run: |
-        coverage run -m pytest
-        coverage html
+      run: coverage run -m pytest
+    - name: Get Cover 
+            uses: orgoro/coverage@v3
+            with:
+                coverageFile: path/to/coverage.xml
+                token: ${{ secrets.GITHUB_TOKEN }}
 
