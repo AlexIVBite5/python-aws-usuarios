@@ -32,7 +32,7 @@ def test_all():
         result = handler.all({}, {})
         # Verifica que la respuesta sea la esperada
         assert result['statusCode'] == 200
-        assert len(result['body']) == 2
+        assert result['body'] == '[{"id": "1234", "name": "John", "surname": "Doe"}, {"id": "5678", "name": "Jane", "surname": "Smith"}]'
         assert {"id": "1234", "name": "John", "surname": "Doe"} in result['body']
         assert {"id": "5678", "name": "Jane", "surname": "Smith"} in result['body']
 
