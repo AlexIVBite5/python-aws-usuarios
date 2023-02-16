@@ -33,7 +33,7 @@ def test_create():
     # Check that the item was actually created in DynamoDB
     mock_client.put_item.assert_called_once()
     args, kwargs = mock_client.put_item.call_args
-    assert kwargs['TableName'] == 'test_table'
+    assert kwargs['TableName'] == 'test-table'
     assert kwargs['Item']['name']['S'] == 'John'
     assert kwargs['Item']['last_name']['S'] == 'Doe'
     assert 'createdAt' in kwargs['Item']
