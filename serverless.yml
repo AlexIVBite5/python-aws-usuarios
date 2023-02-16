@@ -30,25 +30,25 @@ provider:
    
 functions:
   create:
-    handler: src/handler.create
+    handler: handler.create
     events:
       - http:
           path: user/create
           method: post
   get:
-    handler: src/handler.get
+    handler: handler.get
     events:
       - http:
           path: user/get/{userId}
           method: get
   all:
-    handler: src/handler.all
+    handler: handler.all
     events:
       - http:
           path: user/all
           method: get
   replication:
-    handler: src/handler.replication
+    handler: handler.replication
     events:
       - stream:
           type: dynamodb
