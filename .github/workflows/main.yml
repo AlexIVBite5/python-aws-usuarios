@@ -27,6 +27,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest moto boto3
         pip install moto[mock_dynamodb2]
+        pip install coverage
     # Deployment of your project
     - name: Install Plugin and Deploy
       uses: serverless/github-action@v3.1
@@ -41,4 +42,8 @@ jobs:
 
     - name: Run tests
       run: pytest
+    - name: Run tests coverage
+      run: |
+        coverage run -m pytest
+        coverage html
 
